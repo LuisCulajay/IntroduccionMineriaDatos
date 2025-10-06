@@ -27,6 +27,9 @@ datos_sector <- datos_sector[, -1]
 # Datos por GruposQuinquenales
 unique(datos$Grupos_Quinquenales)
 datos_quinquenales <- subset(datos, Grupos_Quinquenales == "20 a 24")
+data.frame(1:ncol(datos_quinquenales), colnames(datos_quinquenales))
+datos_quinquenales <- datos_quinquenales[, -6]
+datos_quinquenales <- datos_quinquenales[, -5]
 ```
 
 # Mineria
@@ -38,4 +41,7 @@ inspect(reglas_departamento[0:63])
 # Reglas por sector
 reglas_sector <- apriori(datos_sector, parameter = list(support = 0.2, confidence = 0.5))
 inspect(reglas_sector[0:144])
+
+reglas_quinquenales <- apriori(datos_quinquenales, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas_quinquenales[0:45])
 ```
