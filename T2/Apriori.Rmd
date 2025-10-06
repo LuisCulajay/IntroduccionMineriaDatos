@@ -1,0 +1,41 @@
+```{r}
+library(arules)
+library(readxl)
+```
+
+# Carga y limpieza de datos
+```{r}
+datos <- read_excel("C:\\Users\\luisf\\OneDrive\\Documentos\\USAC\\POSTGRADO\\TR4\\Mineria de datos\\IntroduccionMineriaDatos\\T2\\datos.xlsx")
+
+# Datos generales
+data.frame(1:ncol(datos), colnames(datos))
+datos <- datos[, -1]
+
+# Datos por departamento
+unique(datos$Departamento)
+datos_departamento <- subset(datos, Departamento == "Totonicapán")
+data.frame(1:ncol(datos_departamento), colnames(datos_departamento))
+datos_departamento <- datos_departamento[, -2]
+
+# Datos por sector
+unique(datos$Sector)
+datos_sector <- subset(datos, Sector == "Privado" & CARRERA == "Profesorado de Segunda Enseñanza en Pedagogía y Ciencias Sociales")
+data.frame(1:ncol(datos_sector), colnames(datos_sector))
+datos_sector <- datos_sector[, -7]
+datos_sector <- datos_sector[, -1]
+
+# Datos por GruposQuinquenales
+unique(datos$Grupos_Quinquenales)
+datos_quinquenales <- subset(datos, Grupos_Quinquenales == "20 a 24")
+```
+
+# Mineria
+```{r}
+# Reglas por departamento
+reglas_departamento <- apriori(datos_departamento, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas_departamento[0:63])
+
+# Reglas por sector
+reglas_sector <- apriori(datos_sector, parameter = list(support = 0.2, confidence = 0.5))
+inspect(reglas_sector[0:144])
+```
