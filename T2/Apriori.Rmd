@@ -1,4 +1,5 @@
 ```{r}
+# install.packages("arules", type = "binary")
 library(arules)
 library(readxl)
 ```

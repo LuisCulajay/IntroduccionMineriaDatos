@@ -1,0 +1,48 @@
+# Librerías y datos
+```{r}
+library(readxl)
+library(fim4r)
+
+data <- read_excel("C:\\Users\\luisf\\OneDrive\\Documentos\\USAC\\POSTGRADO\\TR4\\Mineria de datos\\IntroduccionMineriaDatos\\T3\\datos.xlsx")
+```
+
+# Patrón 1.
+```{r}
+data_p1 <- data[, c("QUIEN_REPORTA", "HEC_DEPTO", "HEC_DEPTOMCPIO")]
+
+data_p1 <- subset(data_p1, QUIEN_REPORTA==2)
+data.frame(1:ncol(data_p1), colnames(data_p1))
+data_p1 <- data_p1[, -1]
+
+reglas_p1 <- fim4r(data_p1, method="fpgrowth", target ="rules", supp =.2, conf=.5)
+
+r1 <- as(reglas_p1, "data.frame")
+```
+
+# Patrón 2.
+```{r}
+data_p2 <- data[, c("AGR_SEXO", "AGR_EDAD", "AGR_ALFAB", "AGR_NACIONAL", "AGR_TRABAJA")]
+
+data_p2 <- subset(data_p2, AGR_NACIONAL==1 & AGR_SEXO==1)
+data.frame(1:ncol(data_p2), colnames(data_p2))
+data_p2 <- data_p2[, -1]
+data_p2 <- data_p2[, -3]
+
+reglas_p2 <- fim4r(data_p2, method="fpgrowth", target ="rules", supp =.2, conf=.5)
+
+r2 <- as(reglas_p2, "data.frame")
+```
+
+# Patrón 3.
+```{r}
+data_p3 <- data[, c("VIC_SEXO", "VIC_EDAD", "VIC_EST_CIV", "VIC_TRABAJA", "AGR_EDAD", "AGR_EST_CIV")]
+
+data_p3 <- subset(data_p3, VIC_SEXO==2)
+data.frame(1:ncol(data_p3), colnames(data_p3))
+data_p3 <- data_p3[, -1]
+
+reglas_p3 <- fim4r(data_p3, method="fpgrowth", target ="rules", supp =.2, conf=.5)
+
+r3 <- as(reglas_p3, "data.frame")
+```
+
