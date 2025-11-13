@@ -1,0 +1,59 @@
+# Librerias
+```{r}
+library(readxl)
+library(rpart)
+library(rpart.plot)
+```
+
+# Datos
+```{r}
+data <- read_excel("..\\datos.xlsx")
+```
+
+# Arbol de decision
+```{r}
+# Construccion
+arbol <- rpart(VIC_SEXO ~
+                 AGR_SEXO +
+                 AGR_EDAD +
+                 AGR_ALFAB +
+                 AGR_ESCOLARIDAD +
+                 AGR_EST_CIV,
+               data = data, method = "class")
+
+# Graficacion
+rpart.plot(arbol, type = 2, extra = 0, under = TRUE, fallen.leaves = TRUE, box.palette = "BuGn", main = "Género de la victima con base al agresor", cex = 0.5)
+
+# Creacion de pruebas a clasificar
+# Agresor, mediana edad, alfabeta, universitario, soltero
+agresor_1 <- data.frame(
+  AGR_SEXO = c(1),
+  AGR_EDAD = c(30),
+  AGR_ALFAB = c(1),
+  AGR_ESCOLARIDAD = c(59),
+  AGR_EST_CIV = c(1)
+)
+
+# Agresora, adolescente, alfabeta, diversificado, no soltera
+agresor_2 <- data.frame(
+  AGR_SEXO = c(2),
+  AGR_EDAD = c(18),
+  AGR_ALFAB = c(1),
+  AGR_ESCOLARIDAD = c(49),
+  AGR_EST_CIV = c(2)
+)
+
+# Agresor, adulto, analfabeta, estudios basicos, no soltero
+agresor_3 <- data.frame(
+  AGR_SEXO = c(1),
+  AGR_EDAD = c(50),
+  AGR_ALFAB = c(2),
+  AGR_ESCOLARIDAD = c(39),
+  AGR_EST_CIV = c(2)
+)
+
+# Predicciones del género de la víctima con base a los datos del agresor
+predict(arbol, agresor_1, type = "prob")
+predict(arbol, agresor_2, type = "prob")
+predict(arbol, agresor_3, type = "prob")
+```
